@@ -21,7 +21,7 @@ export const TodoContext = createContext<TodoContextProps | undefined>(
 );
 
 export const TodoProvider = (props: { children: React.ReactNode }) => {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const [todos, setTodos] = useLocalStorage<Todo[]>('todos', []);
 
   // ::: ADD NEW TODO :::
   const addTodo = (text: string) => {

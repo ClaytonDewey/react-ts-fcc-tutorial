@@ -5,6 +5,9 @@ import { useLocalStorage } from 'usehooks-ts';
 interface TodoContextProps {
   todos: Todo[];
   addTodo: (text: string) => void;
+  deleteTodo: (id: string) => void;
+  editTodo: (id: string, text: string) => void;
+  updateTodoStatus: (id: string) => void;
 }
 
 export interface Todo {
@@ -31,9 +34,44 @@ export const TodoProvider = (props: { children: React.ReactNode }) => {
     setTodos([...todos, newTodo]);
   };
 
+  // ::: DELETE A TODO :::
+  const deleteTodo = (id: string) => {
+    setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
+  };
+
+  // ::: EDIT A TODO :::
+  const editTodo = (id: string, text: string) => {
+    setTodos(prevTodos => {
+      return prevTodos.map(todo => {
+        if (todo.id === id) {
+          return { ...todo, text };
+        }
+        return todo;
+      });
+    });
+  };
+
+  // ::: UPDATE A TODO :::
+  const updateTodoStatus = (id: string) => {
+    setTodos(prevTodos => {
+      return prevTodos.map(todo => {
+        if (todo.id === id) {
+          return {
+            ...todo,
+            status: todo.status === 'undone' ? 'completed' : 'undone',
+          };
+        }
+        return todo;
+      });
+    });
+  };
+
   const value: TodoContextProps = {
     todos,
     addTodo,
+    deleteTodo,
+    editTodo,
+    updateTodoStatus,
   };
 
   return (

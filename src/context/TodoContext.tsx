@@ -22,7 +22,13 @@ export const TodoProvider = (props: { children: React.ReactNode }) => {
 
   // ::: ADD NEW TODO :::
   const addTodo = (text: string) => {
-    setTodos([...todos, text]);
+    const newTodo: Todo = {
+      id: nanoid(),
+      text,
+      status: 'undone',
+    };
+
+    setTodos([...todos, newTodo]);
   };
 
   const value: TodoContextProps = {
